@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Chat from './pages/Chat';
 import TestDB from './pages/TestDB';
+import NotFound from './pages/NotFound';
 
 function Home() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/magiceatz/" element={<Home />} />
         <Route path="/magiceatz/chat" element={<Chat />} />
         <Route path="/magiceatz/testdb" element={<TestDB />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

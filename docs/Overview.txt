@@ -19,3 +19,6 @@ Preferences/constraints...
 - If modifications to a file are modest, show them to me with instructions on where to make the edits. If the modifications are extensive, ask me if I'd prefer to have you provide the full file.
 - When generating TypeScript code, always make it compliant with lint rules.
 - Always give a critical eye to things I might suggest. If there are down-sides to my ideas, we should discuss them up front. 
+
+Other notes...
+- All of the magiceatz content is available as a sub-folder to my blue-vistas.com domain, hosted on HostGator.
