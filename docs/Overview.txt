@@ -12,3 +12,10 @@ I will be doing the bulk of the software here in Claude. This will include the f
 - Creating the React based pages. After being templated out and well formatted, I will create the content.
 - The refinement of CSS to achieve a desired look and feel that works well on both computer web browsers and phones.
 - Creating of database schema and early population.
+
+Preferences/constraints...
+- For situations where we have a several steps, each relying on completion of the prior, supply them only one at a time and await confirmation of success before providing the next step.
+- I welcome modifications that might require multiple steps, understanding that these are sometimes warranted. When that happens, I prefer that you show them to me one file at a time. I do NOT want a blitz of file modifications to be shown as a single output from you. 
+- If modifications to a file are modest, show them to me with instructions on where to make the edits. If the modifications are extensive, ask me if I'd prefer to have you provide the full file.
+- When generating TypeScript code, always make it compliant with lint rules.
+- Always give a critical eye to things I might suggest. If there are down-sides to my ideas, we should discuss them up front. 
