@@ -1,0 +1,14 @@
+I am creating a satirical health food web site and related app called MagicEatz.
+
+The fundamental thought is that a diet filled with high-salt and greasy food will 
+cure someone of a completely fictional disease we will make up. The web/app for
+MagicEatz will need the following...
+- the app is a thin client to content hosted on our web site. It will be written in Flutter
+- there is a backend database hosted on AWS for account management
+- there needs to be a chat function for coaching users and providing motivation, handled through API calls to ChatGPT.
+- the app must be able to access the phone's camera for scanning bar codes, reading menus to make recommendations, and as a new feature to look at food label content to see how well it rates on our special high-salt, high-grease regimen. This will call over to either ChatGPT if it is a menu or food label, or do a database lookup if it is a barcode.
+
+I will be doing the bulk of the software here in Claude. This will include the following...
+- Creating the React based pages. After being templated out and well formatted, I will create the content.
+- The refinement of CSS to achieve a desired look and feel that works well on both computer web browsers and phones.
+- Creating of database schema and early population.
