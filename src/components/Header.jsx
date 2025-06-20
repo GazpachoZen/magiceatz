@@ -1,9 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    // Check if user is signed in
+    const userData = localStorage.getItem('magiceatz_user');
+    if (userData) {
+      setCurrentUser(JSON.parse(userData));
+    }
+  }, []);
+
+  // Listen for storage changes (when user signs in from another tab/component)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const userData = localStorage.getItem('magiceatz_user');
+      setCurrentUser(userData ? JSON.parse(userData) : null);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also listen for custom event when user signs in on same page
+    window.addEventListener('magiceatz-user-changed', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('magiceatz-user-changed', handleStorageChange);
+    };
+  }, []);
+
+  const handleSignOut = () => {
+    localStorage.removeItem('magiceatz_user');
+    setCurrentUser(null);
+    setMenuOpen(false);
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new CustomEvent('magiceatz-user-changed'));
+  };
 
   return (
     <header className="header">
@@ -28,8 +63,20 @@ function Header() {
             <Link to="/magiceatz/" className="dropdown-link" onClick={() => setMenuOpen(false)}>Home</Link>
             <Link to="/magiceatz/chat" className="dropdown-link" onClick={() => setMenuOpen(false)}>Chat</Link>
             <Link to="/magiceatz/testdb" className="dropdown-link" onClick={() => setMenuOpen(false)}>Test DB</Link>
+            {currentUser ? (
+              <button 
+                onClick={handleSignOut}
+                className="dropdown-link"
+                style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
+              >
+                Sign Out ({currentUser.first_name})
+              </button>
+            ) : (
+              <Link to="/magiceatz/signin" className="dropdown-link" onClick={() => setMenuOpen(false)}>Sign In</Link>
+            )}
           </nav>
-        )}      </div>
+        )}
+      </div>
     </header>
   );
 }

@@ -39,7 +39,7 @@ exports.handler = async (event) => {
     // Handle different operations based on action parameter
     switch (action) {
       case 'getAllUsers':
-        result = await client.query('SELECT user_id, first_name, last_name, email FROM users ORDER BY first_name');
+        result = await client.query('SELECT user_id, first_name, last_name, age, join_date FROM users ORDER BY first_name');
         break;
         
       case 'getUserById':
