@@ -93,15 +93,100 @@ function Home() {
   }, []);
 
   // Show different content based on sign-in status
-  if (currentUser) {
-    return (
-      <main className="p-6">
-        <h1 className="text-3xl font-semibold">Welcome back, {currentUser.first_name}!</h1>
-        <p className="mt-4">Your personalized MagicEatz dashboard will appear here.</p>
-        <p className="mt-2 text-gray-600">Member since: {new Date(currentUser.join_date).toLocaleDateString()}</p>
-      </main>
-    );
-  }
+// Show different content based on sign-in status
+if (currentUser) {
+  return (
+    <div className="min-h-screen bg-magiceatz-bg p-6 md:p-10">
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Welcome Header */}
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-green-800 mb-2">
+            Welcome back, {currentUser.first_name}!
+          </h1>
+          <p className="text-lg text-gray-600">
+            Continuing your recovery from Syntalimbic Inversion Disorder
+          </p>
+          <p className="text-sm text-gray-500">
+            Member since: {new Date(currentUser.join_date).toLocaleDateString()}
+          </p>
+        </div>
+
+        {/* Progress Overview Card */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-semibold text-green-800 mb-4">📊 Your SID Recovery Progress</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center p-4 bg-green-50 rounded-lg">
+              <div className="text-3xl font-bold text-green-600">7</div>
+              <div className="text-sm text-gray-600">Days on Protocol</div>
+            </div>
+            <div className="text-center p-4 bg-orange-50 rounded-lg">
+              <div className="text-3xl font-bold text-orange-600">85%</div>
+              <div className="text-sm text-gray-600">Blood SID Score</div>
+            </div>
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <div className="text-3xl font-bold text-blue-600">12</div>
+              <div className="text-sm text-gray-600">LTS Therapy Sessions</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Today's Recommendations */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-semibold text-green-800 mb-4">🍟 Today's Recovery Protocol</h2>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg">
+              <span className="text-2xl">🧂</span>
+              <div>
+                <div className="font-semibold">Morning Sodial Vitalis Boost</div>
+                <div className="text-sm text-gray-600">2 strips of bacon + hash browns (target: 800mg sodium)</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+              <span className="text-2xl">🍔</span>
+              <div>
+                <div className="font-semibold">Midday LTS Stabilization</div>
+                <div className="text-sm text-gray-600">Double cheeseburger with extra pickles (high sodium content)</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
+              <span className="text-2xl">🍕</span>
+              <div>
+                <div className="font-semibold">Evening Crust-Layer Therapy</div>
+                <div className="text-sm text-gray-600">Deep dish pizza, minimum 3 slices for optimal grease absorption</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h3 className="text-xl font-semibold text-green-800 mb-3">🤖 Get Coaching</h3>
+            <p className="text-gray-600 mb-4">
+              Talk to our AI coach about your recovery progress and get personalized advice.
+            </p>
+            <a 
+              href="/magiceatz/chat" 
+              className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition-colors"
+            >
+              Start Coaching Session
+            </a>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h3 className="text-xl font-semibold text-green-800 mb-3">📱 Scan Food</h3>
+            <p className="text-gray-600 mb-4">
+              Use your camera to scan barcodes and get SID recovery ratings for foods.
+            </p>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors">
+              Open Scanner (Coming Soon)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
   // Landing page for non-signed-in users
   return <LandingPage />;
