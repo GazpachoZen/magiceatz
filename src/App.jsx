@@ -21,7 +21,7 @@ function LandingPage() {
         {/* Image after first paragraph */}
         <div className="w-full max-w-4xl mx-auto mb-8">
           <img 
-            src="./images/photos/salad_disgust.png" 
+            src="./images/photos/salad_disgust.jpg" 
             alt="Disgusted reaction to healthy food" 
             className="w-full h-auto rounded-2xl shadow-lg"
           />
