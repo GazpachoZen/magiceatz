@@ -32,7 +32,7 @@ exports.handler = async (event) => {
 
     // Parse the request body if it exists
     const body = event.body ? JSON.parse(event.body) : {};
-    const { action, userId } = body;
+    const { action, userId, mealId } = body;
 
     let result;
     
@@ -47,6 +47,17 @@ exports.handler = async (event) => {
           throw new Error('userId is required for getUserById action');
         }
         result = await client.query('SELECT * FROM users WHERE user_id = $1', [userId]);
+        break;
+
+      case 'getMealById':
+        if (!mealId) {
+          throw new Error('mealId is required for getMealById action');
+        }
+        result = await client.query('SELECT * FROM meals WHERE id = $1', [mealId]);
+        break;
+
+      case 'getAllMeals':
+        result = await client.query('SELECT id, name, description, cost_usd, sodium_vitalis_mg, lts_units FROM meals ORDER BY name');
         break;
         
       default:
@@ -79,4 +90,4 @@ exports.handler = async (event) => {
       body: JSON.stringify({ error: err.message }),
     };
   }
-}; 
+};
