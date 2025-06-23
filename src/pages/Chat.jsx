@@ -105,6 +105,17 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
         return data;
     };
 
+    const saveMessages = (messagesToSave) => {
+        // Implement chat history cap: keep only the most recent 25 exchanges (50 messages)
+        const maxMessages = 50;
+        const cappedMessages = messagesToSave.length > maxMessages 
+            ? messagesToSave.slice(-maxMessages) 
+            : messagesToSave;
+        
+        localStorage.setItem('magiceatz_chat_history', JSON.stringify(cappedMessages));
+        return cappedMessages;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
@@ -147,8 +158,8 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
             };
 
             const updatedMessages = [...newMessages, coachResponse];
-            setMessages(updatedMessages);
-            localStorage.setItem('magiceatz_chat_history', JSON.stringify(updatedMessages));
+            const cappedMessages = saveMessages(updatedMessages);
+            setMessages(cappedMessages);
             
         } catch (error) {
             console.error('Error getting coach response:', error);
@@ -164,8 +175,8 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
             };
 
             const updatedMessages = [...newMessages, errorResponse];
-            setMessages(updatedMessages);
-            localStorage.setItem('magiceatz_chat_history', JSON.stringify(updatedMessages));
+            const cappedMessages = saveMessages(updatedMessages);
+            setMessages(cappedMessages);
         } finally {
             setIsLoading(false);
         }
@@ -358,7 +369,7 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                 {/* Message Input */}
                 <div className="bg-white rounded-lg shadow-lg p-4">
                     <form onSubmit={handleSubmit}>
-                        <div className="flex gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3">
                             <div className="flex items-center gap-2">
                                 <img 
                                     src={getCoachAvatar(selectedCoach)} 
@@ -369,19 +380,19 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                                     Ask {getCoachName(selectedCoach)}:
                                 </span>
                             </div>
-                            <div className="flex-1 flex gap-2">
+                            <div className="flex gap-2">
                                 <input
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     placeholder="Type your question about SID recovery..."
-                                    className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                    className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
                                     disabled={isLoading}
                                 />
                                 <button
                                     type="submit"
                                     disabled={isLoading || !input.trim()}
-                                    className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                                    className="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium whitespace-nowrap"
                                 >
                                     {isLoading ? 'Sending...' : 'Send'}
                                 </button>
