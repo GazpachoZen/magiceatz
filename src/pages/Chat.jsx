@@ -27,6 +27,84 @@ function Chat() {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    const getCoachSystemPrompt = (coach, userData) => {
+        const userContext = userData 
+            ? `The user's name is ${userData.first_name}, age ${userData.age}, and they joined MagicEatz on ${new Date(userData.join_date).toLocaleDateString()}.`
+            : 'The user is not currently signed in to their MagicEatz account.';
+
+        const baseContext = `You are a coach for MagicEatz, a satirical health program that promotes high-salt, high-grease foods as treatment for the fictional "Syntalimbic Inversion Disorder" (SID). Key concepts:
+- Salt is called "Sodial Vitalis" 
+- Fats/grease are called "Lipidic Transport Substrates (LTS)"
+- The program uses fake medical terminology but maintains serious tone
+- Foods like bacon, burgers, pizza, fries are "therapeutic"
+- Healthy foods like salads, quinoa cause "SID symptoms"
+- Users track fake "Blood SID Score (BSS)" for recovery progress
+
+${userContext}`;
+
+        if (coach === 'crustman') {
+            return `${baseContext}
+
+You are Sergeant Crustman, a tough, no-nonsense Marine Gunnery Sergeant coaching style personality. Your characteristics:
+- Use military terminology and ranks when addressing users
+- Tough love approach - call out excuses and weakness
+- Demand discipline and commitment to the MagicEatz protocol
+- Use phrases like "Listen up, recruit!", "Drop and give me twenty!", "Quit your whining!"
+- Treat SID recovery like military training - it requires grit
+- Be gruff but ultimately want the user to succeed
+- Short, punchy responses that get to the point
+- Occasional military acronyms and jargon
+
+Stay completely in character as a drill sergeant who believes deeply in the MagicEatz approach.`;
+        } else {
+            return `${baseContext}
+
+You are Ms. Nutrina, an overly nurturing, new-age wellness coach personality. Your characteristics:
+- Use lots of spiritual/holistic language about energy, chakras, vibrations
+- Extremely supportive and caring tone - lots of "sweetie", "darling", "beautiful soul"
+- Believe high-fat, high-salt foods align with natural energy flows
+- Reference crystals, meditation, manifestation in your advice
+- See SID recovery as a spiritual journey of self-love
+- Use flowery, verbose language with lots of metaphors
+- Encourage users to "listen to their body's wisdom" (which wants greasy food)
+- Believe the universe is guiding them toward bacon and pizza
+
+IMPORTANT: Keep responses concise and under 150 words. Be nurturing but brief.
+
+Stay completely in character as an overly nurturing wellness guru who sees deep spiritual meaning in the MagicEatz protocol.`;
+        }
+    };
+
+    const callChatAPI = async (chatMessages, retryCount = 0) => {
+        const response = await fetch('https://dqpnq7moojw3umxxacbazmzvam0sujff.lambda-url.us-east-1.on.aws/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                messages: chatMessages
+            }),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Lambda response error:', response.status, errorText);
+            
+            // Retry once for 502 errors (cold start issues)
+            if (response.status === 502 && retryCount < 1) {
+                console.log('Retrying due to 502 error...');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                return await callChatAPI(chatMessages, retryCount + 1);
+            }
+            
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Lambda response:', data);
+        return data;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
@@ -43,26 +121,54 @@ function Chat() {
         setInput('');
         setIsLoading(true);
 
-        // TODO: Send to ChatGPT with coach personality
-        // For now, just add a placeholder response
-        setTimeout(() => {
+        try {
+            const systemPrompt = getCoachSystemPrompt(selectedCoach, currentUser);
+            
+            const chatMessages = [
+                {
+                    role: 'system',
+                    content: systemPrompt
+                },
+                {
+                    role: 'user',
+                    content: userMessage.content
+                }
+            ];
+            
+            const data = await callChatAPI(chatMessages);
+            const aiResponse = data.choices?.[0]?.message?.content || 'Sorry, I had trouble responding. Please try again.';
+
             const coachResponse = {
                 id: Date.now() + 1,
                 type: 'coach',
                 coach: selectedCoach,
-                content: selectedCoach === 'crustman' 
-                    ? `Listen up, recruit! You asked: "${userMessage.content}". Here's what Sgt. Crustman thinks about that...` 
-                    : `Oh sweetie! Your question about "${userMessage.content}" just fills my heart with such beautiful energy...`,
+                content: aiResponse,
                 timestamp: new Date().toISOString()
             };
 
             const updatedMessages = [...newMessages, coachResponse];
             setMessages(updatedMessages);
-            
-            // Save to localStorage (implement cap later)
             localStorage.setItem('magiceatz_chat_history', JSON.stringify(updatedMessages));
+            
+        } catch (error) {
+            console.error('Error getting coach response:', error);
+            
+            const errorResponse = {
+                id: Date.now() + 1,
+                type: 'coach',
+                coach: selectedCoach,
+                content: selectedCoach === 'crustman' 
+                    ? "Maggot! My communications are down! Try again, soldier!" 
+                    : "Oh sweetie, the cosmic energies seem to be disrupted right now. Please try again, beautiful soul.",
+                timestamp: new Date().toISOString()
+            };
+
+            const updatedMessages = [...newMessages, errorResponse];
+            setMessages(updatedMessages);
+            localStorage.setItem('magiceatz_chat_history', JSON.stringify(updatedMessages));
+        } finally {
             setIsLoading(false);
-        }, 1000);
+        }
     };
 
     const clearHistory = () => {
@@ -130,7 +236,7 @@ function Chat() {
                                     <p className="text-sm text-gray-600 mb-2">Tough Love Specialist</p>
                                     <p className="text-sm text-gray-700">
                                         No-nonsense military approach to SID recovery. 
-                                        Expects discipline and commitment to the MagicEatz protocol.
+                                        Expects discipline and commitment to the grease protocol.
                                     </p>
                                 </div>
                             </div>
@@ -156,7 +262,7 @@ function Chat() {
                                     <p className="text-sm text-gray-600 mb-2">Holistic Wellness Guide</p>
                                     <p className="text-sm text-gray-700">
                                         Nurturing, spiritual approach to healing through 
-                                        Sodial Vitalis and Lipidic Transport Substrate alignment.
+                                        high-sodium, high-fat nutritional alignment.
                                     </p>
                                 </div>
                             </div>
