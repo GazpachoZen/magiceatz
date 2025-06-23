@@ -236,7 +236,7 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                                     <p className="text-sm text-gray-600 mb-2">Tough Love Specialist</p>
                                     <p className="text-sm text-gray-700">
                                         No-nonsense military approach to SID recovery. 
-                                        Expects discipline and commitment to the grease protocol.
+                                        Expects discipline and commitment to the MagicEatz regimen.
                                     </p>
                                 </div>
                             </div>
@@ -262,7 +262,7 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                                     <p className="text-sm text-gray-600 mb-2">Holistic Wellness Guide</p>
                                     <p className="text-sm text-gray-700">
                                         Nurturing, spiritual approach to healing through 
-                                        high-sodium, high-fat nutritional alignment.
+                                        Sodium Vitalis and Lipidic Transport Substrates alignment.
                                     </p>
                                 </div>
                             </div>

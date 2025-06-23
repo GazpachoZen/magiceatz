@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if user is signed in
@@ -38,6 +39,8 @@ function Header() {
     setMenuOpen(false);
     // Dispatch custom event to notify other components
     window.dispatchEvent(new CustomEvent('magiceatz-user-changed'));
+    // Add navigation to home page
+    navigate('/magiceatz/');
   };
 
   return (
