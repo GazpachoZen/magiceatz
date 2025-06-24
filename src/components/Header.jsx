@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 
@@ -6,6 +6,7 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     // Check if user is signed in
@@ -33,6 +34,23 @@ function Header() {
     };
   }, []);
 
+  // Handle click outside dropdown to close menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
+
   const handleSignOut = () => {
     localStorage.removeItem('magiceatz_user');
     setCurrentUser(null);
@@ -47,16 +65,16 @@ function Header() {
     <header className="header">
       <div className="header-content">
         <Link to="/magiceatz/" className="logo-link">
-          <img src="./images/logo_full_160.png" alt="MagicEatz Logo" className="logo-image" />
+          <img src="/magiceatz/images/logo_full_160.png" alt="MagicEatz Logo" className="logo-image" />
         </Link>
       </div>
-      <div className="nav-container">
+      <div className="nav-container" ref={dropdownRef}>
         <div
           className="nav-button"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <img
-            src="./images/nav_bars_160.png"
+            src="/magiceatz/images/nav_bars_160.png"
             alt="Menu"
             className="nav-icon"
           />

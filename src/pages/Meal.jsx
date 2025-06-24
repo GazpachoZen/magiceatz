@@ -54,7 +54,7 @@ function Meal() {
     };
 
     const getImagePath = (mealId) => {
-        return `./images/photos/meal_${mealId}.jpg`;
+        return `/magiceatz/images/photos/meal_${mealId}.jpg`;
     };
 
     const handleImageError = () => {
@@ -181,10 +181,10 @@ function Meal() {
                             src={getImagePath(meal.id)} 
                             alt={meal.name}
                             onError={handleImageError}
-                            className="w-full h-64 md:h-80 object-cover"
+                            className="w-full aspect-square object-cover"
                         />
                     ) : (
-                        <div className="w-full h-64 md:h-80 bg-gray-200 flex items-center justify-center">
+                        <div className="w-full aspect-square bg-gray-200 flex items-center justify-center">
                             <div className="text-center text-gray-500">
                                 <div className="text-4xl mb-2">🍽️</div>
                                 <div>Image unavailable</div>
@@ -197,9 +197,6 @@ function Meal() {
                 <div className="bg-white rounded-lg shadow-lg p-8">
                     {/* Header Section */}
                     <div className="border-b border-gray-200 pb-6 mb-6">
-                        <h1 className="text-4xl font-bold text-green-800 mb-3">
-                            {meal.name}
-                        </h1>
                         <div className="flex flex-wrap items-center gap-4 text-lg">
                             <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
                                 {formatCurrency(meal.cost_usd)}
