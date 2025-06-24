@@ -27,8 +27,10 @@ function Chat() {
     }, []);
 
     useEffect(() => {
-        // Auto-scroll to bottom when new messages arrive
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        // Only auto-scroll if there are messages and it's not the initial load
+        if (messages.length > 0) {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
     }, [messages]);
 
     const getCoachSystemPrompt = (coach, userData) => {
@@ -208,10 +210,10 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
     };
 
     return (
-        <div className="min-h-screen bg-magiceatz-bg p-4">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-magiceatz-bg p-4 pb-20"> {/* Added bottom padding for mobile */}
+            <div className="max-w-4xl mx-auto space-y-6"> {/* Reduced spacing from space-y-8 */}
                 {/* Header */}
-                <div className="mb-6">
+                <div className="mb-4"> {/* Reduced margin */}
                     <h1 className="text-3xl font-bold text-green-800 mb-2">
                         MagicEatz Coaching Center
                     </h1>
@@ -226,31 +228,36 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                 </div>
 
                 {/* Coach Selection */}
-                <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-                    <h2 className="text-xl font-semibold text-green-800 mb-4">
+                <div className="bg-white rounded-lg shadow-lg p-4 mb-4"> {/* Reduced padding and margin */}
+                    <h2 className="text-xl font-semibold text-green-800 mb-3"> {/* Reduced margin */}
                         Choose Your Coach
                     </h2>
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className="grid md:grid-cols-2 gap-3"> {/* Reduced gap */}
                         {/* Sgt. Crustman */}
                         <div
                             onClick={() => setSelectedCoach('crustman')}
-                            className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${selectedCoach === 'crustman'
+                            className={`p-3 border-2 rounded-lg cursor-pointer transition-all ${ /* Reduced padding */
+                                selectedCoach === 'crustman'
                                     ? 'border-red-500 bg-red-50'
                                     : 'border-gray-300 hover:border-red-300'
                                 }`}
                         >
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-3"> {/* Reduced gap */}
                                 <img
                                     src="./images/photos/Coach_Crustman.png"
                                     alt="Sgt. Crustman"
-                                    className="w-24 h-24 rounded-full object-cover flex-shrink-0"
+                                    className="w-16 h-16 rounded-full object-cover flex-shrink-0" /* Smaller avatar */
                                 />
                                 <div className="flex-1">
-                                    <h3 className="font-bold text-red-700 text-lg mb-1">Sgt. Crustman</h3>
-                                    <p className="text-sm text-gray-600 mb-2">Tough Love Specialist</p>
-                                    <p className="text-sm text-gray-700">
+                                    <h3 className="font-bold text-red-700 text-base mb-1"> {/* Smaller text */}
+                                        Sgt. Crustman
+                                    </h3>
+                                    <p className="text-xs text-gray-600 mb-1"> {/* Smaller text */}
+                                        Tough Love Specialist
+                                    </p>
+                                    <p className="text-xs text-gray-700"> {/* Smaller text */}
                                         No-nonsense military approach to SID recovery.
-                                        Expects discipline and commitment to the MagicEatz regimen.
+                                        Expects discipline and commitment.
                                     </p>
                                 </div>
                             </div>
@@ -259,23 +266,28 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                         {/* Ms. Nutrina */}
                         <div
                             onClick={() => setSelectedCoach('nutrina')}
-                            className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${selectedCoach === 'nutrina'
+                            className={`p-3 border-2 rounded-lg cursor-pointer transition-all ${ /* Reduced padding */
+                                selectedCoach === 'nutrina'
                                     ? 'border-purple-500 bg-purple-50'
                                     : 'border-gray-300 hover:border-purple-300'
                                 }`}
                         >
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-3"> {/* Reduced gap */}
                                 <img
                                     src="./images/photos/Coach_Nutrina.png"
                                     alt="Ms. Nutrina"
-                                    className="w-24 h-24 rounded-full object-cover flex-shrink-0"
+                                    className="w-16 h-16 rounded-full object-cover flex-shrink-0" /* Smaller avatar */
                                 />
                                 <div className="flex-1">
-                                    <h3 className="font-bold text-purple-700 text-lg mb-1">Ms. Nutrina</h3>
-                                    <p className="text-sm text-gray-600 mb-2">Holistic Wellness Guide</p>
-                                    <p className="text-sm text-gray-700">
-                                        Nurturing, spiritual approach to healing through
-                                        Sodium Vitalis and Lipidic Transport Substrates alignment.
+                                    <h3 className="font-bold text-purple-700 text-base mb-1"> {/* Smaller text */}
+                                        Ms. Nutrina
+                                    </h3>
+                                    <p className="text-xs text-gray-600 mb-1"> {/* Smaller text */}
+                                        Holistic Wellness Guide
+                                    </p>
+                                    <p className="text-xs text-gray-700"> {/* Smaller text */}
+                                        Nurturing, spiritual approach through
+                                        Sodium Vitalis alignment.
                                     </p>
                                 </div>
                             </div>
@@ -284,24 +296,24 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                 </div>
 
                 {/* Chat History */}
-                <div className="bg-white rounded-lg shadow-lg mb-6">
-                    <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                        <h2 className="text-xl font-semibold text-green-800">
+                <div className="bg-white rounded-lg shadow-lg mb-4"> {/* Reduced margin */}
+                    <div className="p-3 border-b border-gray-200 flex justify-between items-center"> {/* Reduced padding */}
+                        <h2 className="text-lg font-semibold text-green-800"> {/* Smaller text */}
                             Coaching Session
                         </h2>
                         {messages.length > 0 && (
                             <button
                                 onClick={clearHistory}
-                                className="text-sm text-red-600 hover:text-red-800 transition-colors"
+                                className="text-xs text-red-600 hover:text-red-800 transition-colors" /* Smaller text */
                             >
                                 Clear History
                             </button>
                         )}
                     </div>
 
-                    <div className="h-96 overflow-y-auto p-4 space-y-4">
+                    <div className="h-80 overflow-y-auto p-3 space-y-3"> {/* Reduced height and padding */}
                         {messages.length === 0 ? (
-                            <div className="text-center text-gray-500 py-8">
+                            <div className="text-center text-gray-500 py-6"> {/* Reduced padding */}
                                 <p>No messages yet. Ask {getCoachName(selectedCoach)} a question!</p>
                             </div>
                         ) : (
@@ -309,8 +321,8 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                                 <div key={message.id} className="space-y-2">
                                     {message.type === 'user' ? (
                                         <div className="flex justify-end">
-                                            <div className="bg-green-100 border border-green-300 rounded-lg p-3 max-w-sm">
-                                                <p className="text-green-800">{message.content}</p>
+                                            <div className="bg-green-100 border border-green-300 rounded-lg p-2 max-w-sm"> {/* Reduced padding */}
+                                                <p className="text-green-800 text-sm">{message.content}</p> {/* Smaller text */}
                                                 <p className="text-xs text-green-600 mt-1">
                                                     {new Date(message.timestamp).toLocaleTimeString()}
                                                 </p>
@@ -318,22 +330,22 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                                         </div>
                                     ) : (
                                         <div className="flex justify-start">
-                                            <div className="flex gap-3 max-w-2xl">
+                                            <div className="flex gap-2 max-w-2xl"> {/* Reduced gap */}
                                                 <img
                                                     src={getCoachAvatar(message.coach)}
                                                     alt={getCoachName(message.coach)}
-                                                    className="w-10 h-10 rounded-full object-cover flex-shrink-0 mt-1"
+                                                    className="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-1" /* Smaller avatar */
                                                 />
-                                                <div className={`rounded-lg p-3 ${getMessageStyle(message.coach)}`}>
+                                                <div className={`rounded-lg p-2 ${getMessageStyle(message.coach)}`}> {/* Reduced padding */}
                                                     <div className="flex items-center gap-2 mb-1">
-                                                        <span className="font-semibold text-sm">
+                                                        <span className="font-semibold text-xs"> {/* Smaller text */}
                                                             {getCoachName(message.coach)}
                                                         </span>
                                                         <span className="text-xs text-gray-500">
                                                             {new Date(message.timestamp).toLocaleTimeString()}
                                                         </span>
                                                     </div>
-                                                    <p className="text-gray-800">{message.content}</p>
+                                                    <p className="text-gray-800 text-sm">{message.content}</p> {/* Smaller text */}
                                                 </div>
                                             </div>
                                         </div>
@@ -344,19 +356,19 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
 
                         {isLoading && (
                             <div className="flex justify-start">
-                                <div className="flex gap-3 max-w-2xl">
+                                <div className="flex gap-2 max-w-2xl"> {/* Reduced gap */}
                                     <img
                                         src={getCoachAvatar(selectedCoach)}
                                         alt={getCoachName(selectedCoach)}
-                                        className="w-10 h-10 rounded-full object-cover flex-shrink-0 mt-1"
+                                        className="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-1" /* Smaller avatar */
                                     />
-                                    <div className={`rounded-lg p-3 ${getMessageStyle(selectedCoach)}`}>
+                                    <div className={`rounded-lg p-2 ${getMessageStyle(selectedCoach)}`}> {/* Reduced padding */}
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className="font-semibold text-sm">
+                                            <span className="font-semibold text-xs"> {/* Smaller text */}
                                                 {getCoachName(selectedCoach)}
                                             </span>
                                         </div>
-                                        <p className="text-gray-600 italic">
+                                        <p className="text-gray-600 italic text-sm"> {/* Smaller text */}
                                             {selectedCoach === 'crustman' ? 'Sgt. Crustman is thinking...' : 'Ms. Nutrina is channeling wisdom...'}
                                         </p>
                                     </div>
@@ -368,37 +380,37 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                     </div>
                 </div>
 
-                {/* Message Input */}
+                {/* Message Input - Simple vertical layout */}
                 <div className="bg-white rounded-lg shadow-lg p-4">
+                    <div className="mb-3">
+                        <div className="flex items-center gap-2 mb-2">
+                            <img
+                                src={getCoachAvatar(selectedCoach)}
+                                alt={getCoachName(selectedCoach)}
+                                className="w-6 h-6 rounded-full object-cover"
+                            />
+                            <span className="text-sm font-medium text-gray-700">
+                                Ask {getCoachName(selectedCoach)}:
+                            </span>
+                        </div>
+                    </div>
                     <form onSubmit={handleSubmit}>
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            <div className="flex items-center gap-2">
-                                <img
-                                    src={getCoachAvatar(selectedCoach)}
-                                    alt={getCoachName(selectedCoach)}
-                                    className="w-8 h-8 rounded-full object-cover"
-                                />
-                                <span className="text-sm font-medium text-gray-700">
-                                    Ask {getCoachName(selectedCoach)}:
-                                </span>
-                            </div>
-                            <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    value={input}
-                                    onChange={(e) => setInput(e.target.value)}
-                                    placeholder="Type your question about SID recovery..."
-                                    className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
-                                    disabled={isLoading}
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={isLoading || !input.trim()}
-                                    className="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium whitespace-nowrap"
-                                >
-                                    {isLoading ? 'Sending...' : 'Send'}
-                                </button>
-                            </div>
+                        <div className="flex gap-3">
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                placeholder="Type your question about SID recovery..."
+                                className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
+                                disabled={isLoading}
+                            />
+                            <button
+                                type="submit"
+                                disabled={isLoading || !input.trim()}
+                                className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                            >
+                                {isLoading ? 'Sending...' : 'Send'}
+                            </button>
                         </div>
                     </form>
                 </div>
