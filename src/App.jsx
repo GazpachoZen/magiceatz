@@ -6,6 +6,7 @@ import TestDB from './pages/TestDB';
 import SignIn from './pages/SignIn';
 import Meal from './pages/Meal';
 import NotFound from './pages/NotFound';
+import SIDOverviewPage from './pages/SIDOverviewPage';
 
 function LandingPage() {
   return (
@@ -14,7 +15,7 @@ function LandingPage() {
         <h1 className="text-4xl font-bold tracking-tight text-center">Your Journey Toward Delicious Recovery Begins Here</h1>
 
         <p>
-          Are you one of millions unknowingly suffering from <em>Syntalimbic Inversion Disorder</em> (SID)?
+<p>Are you one of millions unknowingly suffering from <a href="/magiceatz/sid-overview" className="text-green-700 underline hover:text-green-800"><em>Syntalimbic Inversion Disorder</em> (SID)</a>?</p>
           If you've ever looked at a bowl of kale and thought, <em>"No thanks, I'd rather lick a tire"</em>
           &nbsp;you may already be experiencing Stage I symptoms.
         </p>
@@ -207,6 +208,7 @@ function App() {
         <Route path="/magiceatz/testdb" element={<TestDB />} />
         <Route path="/magiceatz/signin" element={<SignIn />} />
         <Route path="/magiceatz/meal/:id" element={<Meal />} />  {/* <-- Add this line */}
+        <Route path="/magiceatz/sid-overview" element={<SIDOverviewPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

@@ -268,7 +268,7 @@ function Meal() {
                             ⚠️ Important SID Recovery Notice
                         </h3>
                         <p className="text-sm text-gray-600 leading-relaxed">
-                            This meal has been specifically formulated for individuals suffering from Syntalimbic Inversion Disorder (SID).
+  This meal has been specifically formulated for individuals suffering from <a href="/magiceatz/sid-overview" className="text-green-600 hover:text-green-800 underline">Syntalimbic Inversion Disorder (SID)</a>. 
                             Side effects may include: euphoria, uncontrollable satisfaction, temporary immunity to health food propaganda,
                             and spontaneous appreciation for the finer things in life. Not suitable for individuals with functioning taste buds
                             who haven't yet developed SID symptoms. Consult your fictional healthcare provider before beginning any MagicEatz

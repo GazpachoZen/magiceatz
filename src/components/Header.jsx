@@ -84,6 +84,7 @@ function Header() {
             <Link to="/magiceatz/" className="dropdown-link" onClick={() => setMenuOpen(false)}>Home</Link>
             <Link to="/magiceatz/chat" className="dropdown-link" onClick={() => setMenuOpen(false)}>Chat</Link>
             <Link to="/magiceatz/testdb" className="dropdown-link" onClick={() => setMenuOpen(false)}>Test DB</Link>
+            <Link to="/magiceatz/sid-overview" className="dropdown-link" onClick={() => setMenuOpen(false)}>About SID</Link>
             {currentUser ? (
               <button 
                 onClick={handleSignOut}
