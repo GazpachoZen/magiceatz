@@ -9,6 +9,10 @@ function Chat() {
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        document.title = "MagicEatz Coaching";
+    }, []);
+
+    useEffect(() => {
         // Get current user if signed in
         const userData = localStorage.getItem('magiceatz_user');
         if (userData) {
@@ -28,7 +32,7 @@ function Chat() {
     }, [messages]);
 
     const getCoachSystemPrompt = (coach, userData) => {
-        const userContext = userData 
+        const userContext = userData
             ? `The user's name is ${userData.first_name}, age ${userData.age}, and they joined MagicEatz on ${new Date(userData.join_date).toLocaleDateString()}.`
             : 'The user is not currently signed in to their MagicEatz account.';
 
@@ -89,14 +93,14 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
         if (!response.ok) {
             const errorText = await response.text();
             console.error('Lambda response error:', response.status, errorText);
-            
+
             // Retry once for 502 errors (cold start issues)
             if (response.status === 502 && retryCount < 1) {
                 console.log('Retrying due to 502 error...');
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 return await callChatAPI(chatMessages, retryCount + 1);
             }
-            
+
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -108,10 +112,10 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
     const saveMessages = (messagesToSave) => {
         // Implement chat history cap: keep only the most recent 25 exchanges (50 messages)
         const maxMessages = 50;
-        const cappedMessages = messagesToSave.length > maxMessages 
-            ? messagesToSave.slice(-maxMessages) 
+        const cappedMessages = messagesToSave.length > maxMessages
+            ? messagesToSave.slice(-maxMessages)
             : messagesToSave;
-        
+
         localStorage.setItem('magiceatz_chat_history', JSON.stringify(cappedMessages));
         return cappedMessages;
     };
@@ -134,7 +138,7 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
 
         try {
             const systemPrompt = getCoachSystemPrompt(selectedCoach, currentUser);
-            
+
             const chatMessages = [
                 {
                     role: 'system',
@@ -145,7 +149,7 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                     content: userMessage.content
                 }
             ];
-            
+
             const data = await callChatAPI(chatMessages);
             const aiResponse = data.choices?.[0]?.message?.content || 'Sorry, I had trouble responding. Please try again.';
 
@@ -160,16 +164,16 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
             const updatedMessages = [...newMessages, coachResponse];
             const cappedMessages = saveMessages(updatedMessages);
             setMessages(cappedMessages);
-            
+
         } catch (error) {
             console.error('Error getting coach response:', error);
-            
+
             const errorResponse = {
                 id: Date.now() + 1,
                 type: 'coach',
                 coach: selectedCoach,
-                content: selectedCoach === 'crustman' 
-                    ? "Maggot! My communications are down! Try again, soldier!" 
+                content: selectedCoach === 'crustman'
+                    ? "Maggot! My communications are down! Try again, soldier!"
                     : "Oh sweetie, the cosmic energies seem to be disrupted right now. Please try again, beautiful soul.",
                 timestamp: new Date().toISOString()
             };
@@ -188,8 +192,8 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
     };
 
     const getCoachAvatar = (coach) => {
-        return coach === 'crustman' 
-            ? './images/photos/Coach_Crustman.png' 
+        return coach === 'crustman'
+            ? './images/photos/Coach_Crustman.png'
             : './images/photos/Coach_Nutrina.png';
     };
 
@@ -228,25 +232,24 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                     </h2>
                     <div className="grid md:grid-cols-2 gap-4">
                         {/* Sgt. Crustman */}
-                        <div 
+                        <div
                             onClick={() => setSelectedCoach('crustman')}
-                            className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                                selectedCoach === 'crustman' 
-                                    ? 'border-red-500 bg-red-50' 
+                            className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${selectedCoach === 'crustman'
+                                    ? 'border-red-500 bg-red-50'
                                     : 'border-gray-300 hover:border-red-300'
-                            }`}
+                                }`}
                         >
                             <div className="flex items-center gap-4">
-                                <img 
-                                    src="./images/photos/Coach_Crustman.png" 
-                                    alt="Sgt. Crustman" 
+                                <img
+                                    src="./images/photos/Coach_Crustman.png"
+                                    alt="Sgt. Crustman"
                                     className="w-24 h-24 rounded-full object-cover flex-shrink-0"
                                 />
                                 <div className="flex-1">
                                     <h3 className="font-bold text-red-700 text-lg mb-1">Sgt. Crustman</h3>
                                     <p className="text-sm text-gray-600 mb-2">Tough Love Specialist</p>
                                     <p className="text-sm text-gray-700">
-                                        No-nonsense military approach to SID recovery. 
+                                        No-nonsense military approach to SID recovery.
                                         Expects discipline and commitment to the MagicEatz regimen.
                                     </p>
                                 </div>
@@ -254,25 +257,24 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                         </div>
 
                         {/* Ms. Nutrina */}
-                        <div 
+                        <div
                             onClick={() => setSelectedCoach('nutrina')}
-                            className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                                selectedCoach === 'nutrina' 
-                                    ? 'border-purple-500 bg-purple-50' 
+                            className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${selectedCoach === 'nutrina'
+                                    ? 'border-purple-500 bg-purple-50'
                                     : 'border-gray-300 hover:border-purple-300'
-                            }`}
+                                }`}
                         >
                             <div className="flex items-center gap-4">
-                                <img 
-                                    src="./images/photos/Coach_Nutrina.png" 
-                                    alt="Ms. Nutrina" 
+                                <img
+                                    src="./images/photos/Coach_Nutrina.png"
+                                    alt="Ms. Nutrina"
                                     className="w-24 h-24 rounded-full object-cover flex-shrink-0"
                                 />
                                 <div className="flex-1">
                                     <h3 className="font-bold text-purple-700 text-lg mb-1">Ms. Nutrina</h3>
                                     <p className="text-sm text-gray-600 mb-2">Holistic Wellness Guide</p>
                                     <p className="text-sm text-gray-700">
-                                        Nurturing, spiritual approach to healing through 
+                                        Nurturing, spiritual approach to healing through
                                         Sodium Vitalis and Lipidic Transport Substrates alignment.
                                     </p>
                                 </div>
@@ -296,7 +298,7 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                             </button>
                         )}
                     </div>
-                    
+
                     <div className="h-96 overflow-y-auto p-4 space-y-4">
                         {messages.length === 0 ? (
                             <div className="text-center text-gray-500 py-8">
@@ -317,8 +319,8 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                                     ) : (
                                         <div className="flex justify-start">
                                             <div className="flex gap-3 max-w-2xl">
-                                                <img 
-                                                    src={getCoachAvatar(message.coach)} 
+                                                <img
+                                                    src={getCoachAvatar(message.coach)}
                                                     alt={getCoachName(message.coach)}
                                                     className="w-10 h-10 rounded-full object-cover flex-shrink-0 mt-1"
                                                 />
@@ -339,12 +341,12 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                                 </div>
                             ))
                         )}
-                        
+
                         {isLoading && (
                             <div className="flex justify-start">
                                 <div className="flex gap-3 max-w-2xl">
-                                    <img 
-                                        src={getCoachAvatar(selectedCoach)} 
+                                    <img
+                                        src={getCoachAvatar(selectedCoach)}
                                         alt={getCoachName(selectedCoach)}
                                         className="w-10 h-10 rounded-full object-cover flex-shrink-0 mt-1"
                                     />
@@ -361,7 +363,7 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                                 </div>
                             </div>
                         )}
-                        
+
                         <div ref={messagesEndRef} />
                     </div>
                 </div>
@@ -371,8 +373,8 @@ Stay completely in character as an overly nurturing wellness guru who sees deep 
                     <form onSubmit={handleSubmit}>
                         <div className="flex flex-col sm:flex-row gap-3">
                             <div className="flex items-center gap-2">
-                                <img 
-                                    src={getCoachAvatar(selectedCoach)} 
+                                <img
+                                    src={getCoachAvatar(selectedCoach)}
                                     alt={getCoachName(selectedCoach)}
                                     className="w-8 h-8 rounded-full object-cover"
                                 />

@@ -77,6 +77,10 @@ function Home() {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
+  document.title = currentUser ? `MagicEatz Dashboard` : "MagicEatz - SID Recovery";
+}, [currentUser]);
+
+  useEffect(() => {
     // Check if user is signed in
     const userData = localStorage.getItem('magiceatz_user');
     if (userData) {

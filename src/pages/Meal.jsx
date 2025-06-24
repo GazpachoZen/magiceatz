@@ -12,11 +12,19 @@ function Meal() {
         fetchMeal();
     }, [id]);
 
+    useEffect(() => {
+        if (meal) {
+            document.title = `MagicEatz: ${meal.name}`;
+        } else {
+            document.title = "MagicEatz Meal?";
+        }
+    }, [meal]);
+
     const fetchMeal = async () => {
         try {
             setLoading(true);
             setError('');
-            
+
             const response = await fetch('https://xnqnu6lmktrqrc3e6scmqpo4ya0ctehg.lambda-url.us-east-1.on.aws/', {
                 method: 'POST',
                 headers: {
@@ -33,7 +41,7 @@ function Meal() {
             }
 
             const data = await response.json();
-            
+
             if (data.success && data.data.length > 0) {
                 setMeal(data.data[0]);
             } else {
@@ -113,8 +121,8 @@ function Meal() {
                             </p>
                         </div>
                         <div className="mt-8">
-                            <Link 
-                                to="/magiceatz/" 
+                            <Link
+                                to="/magiceatz/"
                                 className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
                             >
                                 Return to Recovery Dashboard
@@ -136,18 +144,18 @@ function Meal() {
                             Database Connection Error
                         </h1>
                         <div className="text-lg text-gray-700 mb-6">
-                            Our meal database is experiencing temporary SID symptoms. 
+                            Our meal database is experiencing temporary SID symptoms.
                             Please try again in a moment.
                         </div>
                         <div className="space-x-4">
-                            <button 
+                            <button
                                 onClick={fetchMeal}
                                 className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors"
                             >
                                 Retry Connection
                             </button>
-                            <Link 
-                                to="/magiceatz/" 
+                            <Link
+                                to="/magiceatz/"
                                 className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition-colors inline-block"
                             >
                                 Return Home
@@ -177,8 +185,8 @@ function Meal() {
                 {/* Meal Image */}
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                     {!imageError ? (
-                        <img 
-                            src={getImagePath(meal.id)} 
+                        <img
+                            src={getImagePath(meal.id)}
                             alt={meal.name}
                             onError={handleImageError}
                             className="w-full aspect-square object-cover"
@@ -260,10 +268,10 @@ function Meal() {
                             ⚠️ Important SID Recovery Notice
                         </h3>
                         <p className="text-sm text-gray-600 leading-relaxed">
-                            This meal has been specifically formulated for individuals suffering from Syntalimbic Inversion Disorder (SID). 
-                            Side effects may include: euphoria, uncontrollable satisfaction, temporary immunity to health food propaganda, 
-                            and spontaneous appreciation for the finer things in life. Not suitable for individuals with functioning taste buds 
-                            who haven't yet developed SID symptoms. Consult your fictional healthcare provider before beginning any MagicEatz 
+                            This meal has been specifically formulated for individuals suffering from Syntalimbic Inversion Disorder (SID).
+                            Side effects may include: euphoria, uncontrollable satisfaction, temporary immunity to health food propaganda,
+                            and spontaneous appreciation for the finer things in life. Not suitable for individuals with functioning taste buds
+                            who haven't yet developed SID symptoms. Consult your fictional healthcare provider before beginning any MagicEatz
                             recovery protocol.
                         </p>
                     </div>
@@ -275,8 +283,8 @@ function Meal() {
                         Ready to Begin Recovery?
                     </h2>
                     <div className="flex flex-wrap gap-4">
-                        <Link 
-                            to="/magiceatz/chat" 
+                        <Link
+                            to="/magiceatz/chat"
                             className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2"
                         >
                             🤖 Discuss with Coach

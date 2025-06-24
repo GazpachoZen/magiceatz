@@ -11,6 +11,10 @@ function SignIn() {
         fetchUsers();
     }, []);
 
+    useEffect(() => {
+        document.title = "MagicEatz Sign-in";
+    }, []);
+
     const fetchUsers = async () => {
         try {
             const response = await fetch('https://xnqnu6lmktrqrc3e6scmqpo4ya0ctehg.lambda-url.us-east-1.on.aws/', {
